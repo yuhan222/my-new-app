@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>個人作品集 — 藍色調範本</title>
+  <meta name="description" content="藍色調的個人網站範本，含響應式設計、作品集、燈箱、互動效果與可替換圖片位置。">
+
+  <!-- Google Font (可留或換成本地字體) -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --blue-50: #f2f8ff;
+      --blue-100: #d6e9ff;
+      --blue-200: #b6ddff;
+      --blue-400: #3b82f6;
+      --blue-500: #2563eb;
+      --blue-600: #1e40af;
+      --accent: #06b6d4;
+      --glass: rgba(255,255,255,0.06);
+      --text: #0f172a;
+      --muted: #2b3038;
+      --max-width: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: 'Noto Sans TC', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color:var(--text);
+      background: linear-gradient(180deg, var(--blue-50) 0%, #eef6ff 40%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+
+    /* Layout container */
+    .wrap{max-width:var(--max-width);margin:32px auto;padding:24px;}
+
+    /* Header / nav */
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;margin-bottom:22px;
+    }
+    .brand{display:flex;align-items:center;gap:16px}
+    .brand div:first-child {
+  font-size:22px;  /* ← 名字大小 */
+    }
+    .brand div:last-child {
+  font-size:16px; /* ← 副標大小 */
+    }
+    .logo{
+      width:64px;height:64px;border-radius:20px;
+      background:linear-gradient(135deg,#f9e362, #f7c01c);
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:20px;box-shadow:0 6px 20px rgba(37,99,235,0.12);
+    }
+    nav.desktop{display:flex;gap:12px}
+    nav a{padding:10px 12px;border-radius:8px;text-decoration:none;color:var(--blue-600);font-weight:700}
+    nav a.cta{background:var(--blue-500);color:white}
+
+    /* Mobile nav */
+    .burger{display:none;padding:6px;border-radius:8px;background:transparent;border:1px solid rgba(15,23,42,0.04)}
+    .mobile-menu{display:none}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-bottom:34px}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.86));padding:28px;border-radius:16px;box-shadow:0 8px 30px rgba(14,40,80,0.06)}
+    .hero h1{margin:0;font-size:32px;color:var(--blue-600)}
+    .hero p{color:var(--muted);margin:12px 0 18px}
+    .cta-row{display:flex;gap:10px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+    .btn.primary{background:var(--blue-500);color:white}
+    .btn.ghost{border:1px solid rgb(234, 236, 241);background:transparent;color:var(--blue-600)}
+
+    /* Profile image */
+    .profile-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+    .profile-photo{width:100%;max-width:300px;border-radius:14px;overflow:hidden;border:6px solid rgba(255,255,255,0.6);box-shadow:0 6px 30px rgba(2,6,23,0.08)}
+    .profile-photo img{width:100%;height:auto;display:block}
+
+    /* About + Skills */
+    .two-col{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-bottom:32px}
+    .card{background:white;border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(15,23,42,0.04)}
+    .skills{display:flex;flex-wrap:wrap;gap:10px}
+    .skill{padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,#f7cd50, #ffefb9);font-weight:700;color:#924C00}
+
+    /* Portfolio grid */
+    .portfolio-filter{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+    .chip{padding:8px 12px;border-radius:999px;border:1px solid rgba(37,99,235,0.06);background:white;cursor:pointer}
+    .chip.active{background:linear-gradient(90deg,#f7d61a,#f3b909);color:white;border:none}
+
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .card-item{position:relative;border-radius:10px;overflow:hidden;cursor:pointer}
+    .card-item img{width:100%;height:220px;object-fit:cover;display:block;transition:transform .45s ease}
+    .card-item:hover img{transform:scale(1.05)}
+    .card-item .meta{position:absolute;left:12px;bottom:12px;background:linear-gradient(90deg, rgba(2,6,23,0.7), rgba(2,6,23,0.3));color:white;padding:8px 10px;border-radius:8px;font-weight:700}
+
+    /* Lightbox modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);padding:20px}
+    .modal.open{display:flex}
+    .modal-content{max-width:920px;width:100%;background:white;border-radius:12px;overflow:hidden}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #eef2ff}
+    .modal-body{padding:16px}
+
+    /* Footer */
+    footer{margin-top:36px;text-align:center;color:var(--muted);font-size:14px;padding:18px}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr}
+      .two-col{grid-template-columns:1fr}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      .wrap{padding:14px;margin:18px auto}
+      nav.desktop{display:none}
+      .burger{display:block}
+      .mobile-menu{display:none;position:absolute;top:72px;left:14px;right:14px;background:white;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(2,6,23,0.12)}
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .profile-photo{max-width:100%}
+    }
+
+    /* small utilities */
+    .muted{color:var(--muted)}
+    .mb-6{margin-bottom:24px}
+    .hidden{display:none}
+
+    .modal-body {
+  position: relative; /* 讓箭頭可以絕對定位相對於這個容器 */
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 50px;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  z-index: 20; /* 確保在圖片之上 */
+}
+
+.nav-btn:hover {
+  opacity: 1;
+}
+
+#prevBtn { left: 10px; }  /* 靠圖片左邊 */
+#nextBtn { right: 10px; } /* 靠圖片右邊 */
+
+/* ---------- top banner（畫線那塊藍底） ---------- */
+body { position: relative; } /* 確保 absolute 元素參考點穩定 */
+
+.top-banner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 120px;               /* <-- 這是藍底高度，視覺需求可調（例如 100~160px） */
+  background: linear-gradient(90deg, #1e40af, #2563eb);
+  z-index: 1;
+  pointer-events: none;        /* 裝飾性元素，不會擋住點擊 */
+}
+
+/* 把主要內容往上提升，確保內容在 banner 之上 */
+.wrap {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- 導覽列文字變白 ---------- */
+/* 針對桌機導覽列（你範本用 nav.desktop） */
+nav.desktop a {
+  color: #ffffff !important;   /* 白字 */
+}
+
+/* 如果你有 .cta（按鈕）保留其原本樣式（通常是白字在藍底） */
+nav.desktop a.cta { color: white !important; }
+
+/* 行動選單的連結也改為白字 */
+.mobile-menu, .mobile-menu a {
+  color: white;
+}
+
+/* hover 微調（滑鼠移上去變更顏色或亮度） */
+nav.desktop a:hover {
+  color: #bfdbfe !important; /* 淺藍（可改）*/
+}
+
+/* 如果 header 本身有文字（品牌文字），保持原本顏色或改白視需求 */
+header .brand > div { color: inherit; } /* 不強制覆蓋品牌文字 */
+header .brand { color: white; }
+
+.middle-banner {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 660px;
+  height: 470px;               /* <-- 這是藍底高度，視覺需求可調（例如 100~160px） */
+  background: linear-gradient(90deg, #1e40af, #2563eb);
+  z-index: 1;
+  pointer-events: none;        /* 裝飾性元素，不會擋住點擊 */
+}
+
+  </style>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+  
+    <!-- 全寬藍色裝飾條（純裝飾，pointer-events:none 不會擋住互動） -->
+  <div class="top-banner" aria-hidden="true"></div>
+  <div class="middle-banner" aria-hidden="true"></div>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">H</div>
+        <div>
+          <div style="font-weight:900;">洪于涵</div>
+          <div style="color:#ffffff">學生 / 作品集</div>
+        </div>
+      </div>
+
+      <nav class="desktop" aria-label="主要導覽">
+        <a href="#about">關於</a>
+        <a href="#portfolio">作品集</a>
+        <a href="#contact">聯絡我</a>
+        <a class="cta" href="#portfolio">看作品</a>
+      </nav>
+
+      <button class="burger" id="burger" aria-label="開啟選單">☰</button>
+    </header>
+
+
+
+    <!-- mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about">關於</a><br>
+      <a href="#portfolio">作品集</a><br>
+      <a href="#contact">聯絡我</a>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-card">
+        <h1>嗨！我是洪于涵</h1>
+        <p>就讀臺灣師範大學科技應用與人力資源發展學系二年級，同時修習台積電半導體學程，並以興趣為出發點自學數位建模</p>
+        <div class="cta-row">
+          <a class="btn primary" href="#portfolio">查看作品</a>
+        </div>
+
+        <div style="margin-top:18px" class="mb-6">
+          <strong>技能：</strong>
+          <div class="skills" style="margin-top:10px">
+            <div class="skill">3D 建模</div>
+            <div class="skill">Blender</div>
+            <div class="skill">烹飪</div>
+            <div class="skill">不靠鬧鐘起床</div>
+          </div>
+        </div>
+
+        <div class="muted">
+          <i class="fa-regular fa-comment"></i> 持續更新中，敬請期待
+        </div>
+      </div>
+
+      <aside class="profile-wrap">
+        <div class="profile-photo card">
+          <!-- 把 src 換成你的個人照片或作品照 -->
+          <img src="https://i.postimg.cc/R0qSc0nj/retouch-2025091414573138.jpg" alt="個人照或代表作品" loading="lazy">
+        </div>
+        <div style="font-size:14px;color:var(--muted);text-align:center;max-width:360px"></div>
+      </aside>
+    </section>
+
+    <!-- About + contact side -->
+    <section class="two-col">
+      <div class="card">
+        <h3 id="about">關於我</h3>
+        <ul>
+          <li>國小-屏大附小</li>
+          <li>國中-屏東縣立中正國中</li>
+          <li>高中-屏東女中</li>
+        </ul>
+
+        <h3 style="margin-top:14px">經歷</h3>
+        <ul>
+          <li>小學參加全國學生美術比賽書法組獲得全縣第三</li>
+          <li>高中加入烹飪社學習烹飪技巧</li>
+          <li>大一在小木屋鬆餅店擔任製備餐點及點餐人員</li>
+        </ul>
+
+        <h3 style="margin-top:12px">給自己的一句話</h3>
+        <p class="muted">容易三分鐘熱度，但對任何事物都有興趣，會勇於嘗試。</p>
+      </div>
+
+      <div class="card" id="contact">
+        <h3>聯絡我</h3>
+        <p class="muted">minahung95@gmail.com</p>
+        <div style="display:flex;gap:10px;margin-bottom:10px">
+        <a href="https://www.linkedin.com/in/yuhan222/" target="_blank" aria-label="LinkedIn" style="color:var(--blue-500); font-size:24px; display:inline-flex;">
+        <!-- LinkedIn SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" width="24" height="24">
+        <path d="M160 96C124.7 96 96 124.7 96 160L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 160C544 124.7 515.3 96 480 96L160 96zM165 266.2L231.5 266.2L231.5 480L165 480L165 266.2zM236.7 198.5C236.7 219.8 219.5 237 198.2 237C176.9 237 159.7 219.8 159.7 198.5C159.7 177.2 176.9 160 198.2 160C219.5 160 236.7 177.2 236.7 198.5zM413.9 480L413.9 376C413.9 351.2 413.4 319.3 379.4 319.3C344.8 319.3 339.5 346.3 339.5 374.2L339.5 480L273.1 480L273.1 266.2L336.8 266.2L336.8 295.4L337.7 295.4C346.6 278.6 368.3 260.9 400.6 260.9C467.8 260.9 480.3 305.2 480.3 362.8L480.3 480L413.9 480z"/>
+        </svg>
+        </a>
+        <a href="https://www.artstation.com/redfishcold" target="_blank" aria-label="ArtStation" style="color:#FFC107; font-size:24px; display:inline-flex;">
+        <!-- ArtStation SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" width="24" height="24">
+        <path d="M66.1 441.4L109.1 515.7C113.4 524.2 119.9 531.4 128 536.4C136.1 541.4 145.4 544 155 544L440.4 544L381.2 441.4L66.1 441.4zM565.9 414L399.7 123.3C395.3 115.1 388.8 108.2 380.8 103.3C372.8 98.4 363.7 96 354.4 96L266 96L523.3 543.6L564 473.1C565.9 469.9 585 443.4 566 414zM339.2 368.5L223.7 168.5L108.2 368.5L339.2 368.5z"/>
+        </svg>
+        </a>
+        <a href="https://www.facebook.com/share/1BS1GWHAWL/" target="_blank" aria-label="FB" style="color:var(--blue-500); font-size:24px; display:inline-flex;">
+        <!-- FB SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" width="24" height="24">
+        <path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l98.2 0 0-145.8-52.8 0 0-78.2 52.8 0 0-33.7c0-87.1 39.4-127.5 125-127.5 16.2 0 44.2 3.2 55.7 6.4l0 70.8c-6-.6-16.5-1-29.6-1-42 0-58.2 15.9-58.2 57.2l0 27.8 83.6 0-14.4 78.2-69.3 0 0 145.8 129 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32z"/>
+        </svg>
+        </a>
+        <a href="https://www.instagram.com/yuhannn.0222?igsh=NWMxemI1dG0yYTFm" target="_blank" aria-label="Instagram" style="color:#FFC107; font-size:24px; display:inline-flex;">
+        <!-- Instagram SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" width="24" height="24">
+        <path d="M224.3 141a115 115 0 1 0 -.6 230 115 115 0 1 0 .6-230zm-.6 40.4a74.6 74.6 0 1 1 .6 149.2 74.6 74.6 0 1 1 -.6-149.2zm93.4-45.1a26.8 26.8 0 1 1 53.6 0 26.8 26.8 0 1 1 -53.6 0zm129.7 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM399 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+        </svg>
+        </a>
+        </div>
+        <form id="contactForm">
+          <label class="muted" style="font-size:13px">你的 email</label><br>
+          <input type="email" id="email" placeholder="you@email.com" style="width:100%;padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px"><br>
+          <label class="muted" style="font-size:13px;margin-top:8px">訊息</label><br>
+          <textarea id="message" rows="4" style="width:100%;padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px"></textarea>
+          <button type="submit" class="btn primary" style="margin-top:10px">送出</button>
+          <div id="formMsg" style="margin-top:10px;color:var(--muted);font-size:13px"></div>
+        </form>
+      </div>
+    </section>
+
+
+    <!-- Portfolio -->
+    <section id="portfolio" style="margin-bottom:18px">
+      <h3>作品集</h3>
+      <div class="portfolio-filter" id="filters">
+        <button class="chip active" data-filter="all">全部</button>
+        <button class="chip" data-filter="sculpting">雕刻</button>
+        <button class="chip" data-filter="scene">場景</button>
+      </div>
+
+      <div class="grid" id="portfolioGrid">
+        <!-- 範例作品卡片：把 data-src 換成你的高清圖 -->
+
+        <div class="card-item" data-cat="sculpting" tabindex="0" data-title="skull(front)" data-desc="頭顱練習，為雕刻角色進行了解人體基礎" data-src="https://i.postimg.cc/SNDNHNns/2-1.png">
+          <img src="https://i.postimg.cc/SNDNHNns/2-1.png" alt="skull(front)">
+          <div class="meta">skull(front)</div>
+        </div>
+
+         <div class="card-item" data-cat="sculpting" tabindex="0" data-title="skull(side)" data-desc="頭顱練習，為雕刻角色進行了解人體基礎" data-src="https://i.postimg.cc/vTvHYGX0/2-3.png">
+          <img src="https://i.postimg.cc/vTvHYGX0/2-3.png" alt="skull(side)">
+          <div class="meta">skull(side)</div>
+        </div>
+
+        <div class="card-item" data-cat="scene" tabindex="0" data-title="Horror house" data-desc="我的第二個場景練習，主要在練習如何給白模上貼圖，以及調整細節並運用合適的燈光效果渲染氛圍" data-src="https://i.postimg.cc/jjGjvgL4/2.png">
+          <img src="https://i.postimg.cc/jjGjvgL4/2.png" alt="Horror house">
+          <div class="meta">Horror house</div>
+        </div>
+
+        <div class="card-item" data-cat="sculpting" tabindex="0" data-title="man's head(front)" data-desc="第一個人頭雕刻，了解五官分布及肌肉走向為重點" data-src="https://i.postimg.cc/66VQLhwC/3-3.png">
+          <img src="https://i.postimg.cc/66VQLhwC/3-3.png" alt="man's head(front)">
+          <div class="meta">man's head(front)</div>
+        </div>
+
+        <div class="card-item" data-cat="sculpting" tabindex="0" data-title="man's head(bevel)" data-desc="第一個人頭雕刻，了解五官分布及肌肉走向為重點" data-src="https://i.postimg.cc/kXngjtXz/3-1.png">
+          <img src="https://i.postimg.cc/kXngjtXz/3-1.png" alt="man's head(bevel)">
+          <div class="meta">man's head(bevel)</div>
+        </div>
+
+        <div class="card-item" data-cat="sculpting" tabindex="0" data-title="man's head(side)" data-desc="第一個人頭雕刻，了解五官分布及肌肉走向為重點" data-src="https://i.postimg.cc/kgGXC3Sy/3-5.png">
+          <img src="https://i.postimg.cc/kgGXC3Sy/3-5.png" alt="man's head(side)">
+          <div class="meta">man's head(side)</div>
+        </div>
+
+        <div class="card-item" data-cat="sculpting" tabindex="0" data-title="Plankton" data-desc="皮老闆模型，為了瞭解不同筆刷工具的效果產生的練習" data-src="https://i.postimg.cc/1334zVkw/3.png">
+          <img src="https://i.postimg.cc/1334zVkw/3.png" alt="Plankton">
+          <div class="meta">Plankton</div>
+        </div>
+
+        <div class="card-item" data-cat="sculpting" tabindex="0" data-title="snail" data-desc="snail" data-src="https://i.postimg.cc/pLcr5Xv7/2-2.png">
+          <img src="https://i.postimg.cc/pLcr5Xv7/2-2.png" alt="snail">
+          <div class="meta">snail</div>
+        </div>
+
+        <div class="card-item" data-cat="sculpting" tabindex="0" data-title="Disgusting cucumber" data-desc="此模型是為了了解數位雕刻原理而做的練習" data-src="https://i.postimg.cc/mrcDYf2r/1.png">
+          <img src="https://i.postimg.cc/mrcDYf2r/1.png" alt="Disgusting cucumber">
+          <div class="meta">Disgusting cucumber</div>
+        </div>
+
+        <div class="card-item" data-cat="scene" tabindex="0" data-title="first room" data-desc="第一個建模作品，用來摸索軟體功能及了解建模基礎" data-src="https://i.postimg.cc/26hStQWR/1.png">
+          <img src="https://i.postimg.cc/26hStQWR/1.png" alt="first room">
+          <div class="meta">first room</div>
+        </div>
+        <!-- 複製上面的卡片以加入更多作品 -->
+      </div>
+    </section>
+
+    <!-- Modal Lightbox -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div id="modalTitle" style="font-weight:800"></div>
+          <button id="closeModal" aria-label="關閉">✕</button>
+        </div>
+        <div class="modal-body" id="modalBody" style="position:relative">
+        <img id="modalImg" src="" alt="" style="width:100%;height:auto;display:block;border-radius:8px">
+        <p id="modalDesc" style="margin-top:8px;color:var(--muted)"></p>
+        <!-- 左右箭頭 -->
+        <button id="prevBtn" class="nav-btn" aria-label="上一張">&#10094;</button>
+        <button id="nextBtn" class="nav-btn" aria-label="下一張">&#10095;</button>
+        </div>
+      </div>
+    </div>
+<div id="react-root" style="margin-top: 20px;"><div>
+<div id="react-root"></div>
+<div id="root"></div>
+    <footer>
+      © <span id="year"></span> 洪于涵 — 作品集範本 • 
+    </footer>
+  </div>
+
+  <script>
+    // small helpers
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => Array.from(document.querySelectorAll(selector));
+
+    // Mobile menu toggle
+    const burger = $('#burger');
+    const mobileMenu = $('#mobileMenu');
+    burger && burger.addEventListener('click', ()=>{
+      mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Contact form (demo)
+    const form = $('#contactForm');
+    form && form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      $('#formMsg').textContent = '已收到你的訊息。';
+      setTimeout(()=>$('#formMsg').textContent='已清空',3000);
+      form.reset();
+    });
+
+    // Portfolio filter
+    const chips = $$('#filters .chip');
+    const items = $$('#portfolioGrid .card-item');
+    chips.forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        chips.forEach(c=>c.classList.remove('active'));
+        chip.classList.add('active');
+        const filter = chip.dataset.filter;
+        items.forEach(it=>{
+          if(filter === 'all' || it.dataset.cat === filter) it.style.display = '';
+          else it.style.display = 'none';
+        });
+      });
+    });
+
+    // Modal (lightbox)
+    const modal = $('#modal');
+    const modalImg = $('#modalImg');
+    const modalTitle = $('#modalTitle');
+    const modalDesc = $('#modalDesc');
+    const closeModal = $('#closeModal');
+
+    function openModal(el){
+      const src = el.dataset.src || el.querySelector('img').src;
+      const title = el.dataset.title || el.querySelector('.meta')?.textContent || '';
+      const desc = el.dataset.desc || '';
+      modalImg.src = src;
+      modalImg.alt = title;
+      modalTitle.textContent = title;
+      modalDesc.textContent = desc;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close(){
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      modalImg.src = '';
+    }
+    items.forEach(it=>{
+      it.addEventListener('click', ()=>openModal(it));
+      it.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') openModal(it); });
+    });
+    closeModal.addEventListener('click', close);
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) close(); });
+
+    // Scroll reveal (simple)
+    const reveals = document.querySelectorAll('.card, .card-item, .hero-card');
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting) en.target.style.transform = 'translateY(0)';
+        else en.target.style.transform = 'translateY(8px)';
+      });
+    },{threshold:0.08});
+    reveals.forEach(r=>{r.style.transition='transform .6s ease';r.style.transform='translateY(8px)';io.observe(r)});
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Accessibility: Escape key closes modal
+    document.addEventListener('keydown', e=>{ if(e.key === 'Escape') close(); });
+
+    // Tips: Replace images by editing the <img src=> and data-src attributes in the portfolio grid.
+
+     // 以下新增左右箭頭功能
+    const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+let currentIndex = 0;
+
+// 取得目前可見的 items
+function getVisibleItems() {
+  return items.filter(it => it.style.display !== 'none');
+}
+
+// 顯示指定 index 的可見圖片
+function showImage(index) {
+  const visibleItems = getVisibleItems();
+  const el = visibleItems[index];
+  if (!el) return;
+  const src = el.dataset.src || el.querySelector('img').src;
+  const title = el.dataset.title || '';
+  const desc = el.dataset.desc || '';
+  modalImg.src = src;
+  modalTitle.textContent = title;
+  modalDesc.textContent = desc;
+  currentIndex = index;
+}
+
+// 點擊小圖
+items.forEach(el => {
+  el.addEventListener('click', () => {
+    const visibleItems = getVisibleItems();
+    currentIndex = visibleItems.indexOf(el);
+    showImage(currentIndex);
+    openModal(el);
+  });
+});
+
+// 左右箭頭
+function showPrev() {
+  const visibleItems = getVisibleItems();
+  const prevIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
+  showImage(prevIndex);
+}
+function showNext() {
+  const visibleItems = getVisibleItems();
+  const nextIndex = (currentIndex + 1) % visibleItems.length;
+  showImage(nextIndex);
+}
+
+prevBtn.addEventListener('click', showPrev);
+nextBtn.addEventListener('click', showNext);
+
+  </script>
+  <script src="AItest.js"></script>
+</body>
+</html>
