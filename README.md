@@ -1,6 +1,6 @@
 <h2><strong>Homework4</strong></h2>
 
-連接render
+<strong>連接render</strong>
 
 串接網頁圖片
 
