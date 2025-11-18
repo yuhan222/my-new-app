@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 function FooterWeather() {
   const [weather, setWeather] = useState(null);
-  const [city, setCity] = useState("Taipei"); // ⭐ 預設城市
+  const [city, setCity] = useState("Taipei"); // 👉 預設顯示台北
 
-  // 根據 city 自動抓天氣
+  // ⭐ 當使用者改變城市時，自動更新天氣
   useEffect(() => {
     fetch(`https://wttr.in/${city}?format=j1`)
       .then(res => res.json())
@@ -25,7 +25,7 @@ function FooterWeather() {
     <div style={styles.weatherBox}>
       <h3>🌤 今日天氣查詢</h3>
 
-      {/* ⭐ 使用者可以選擇地區 */}
+      {/* ⭐ 改成下拉式選單（Dropdown），不需要輸入框 */}
       <select
         value={city}
         onChange={(e) => setCity(e.target.value)}
@@ -79,9 +79,10 @@ const styles = {
     borderRadius: "6px",
     border: "1px solid #bbb",
     marginBottom: "15px",
-    width: "80%",
+    width: "85%",
     outline: "none",
     cursor: "pointer",
+    fontSize: "15px",
   }
 };
 
