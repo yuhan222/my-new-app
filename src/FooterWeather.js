@@ -98,7 +98,7 @@ const styles = {
     cursor: "pointer",
   },
   card: {
-    background: "linear-gradient(135deg, #dbeafe, #bfdbfe)",
+    background: "linear-gradient(135deg, #5a97e6ff, #90c0faff)",
     padding: "25px",
     borderRadius: "16px",
     maxWidth: "360px",
