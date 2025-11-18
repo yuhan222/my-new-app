@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 
 function FooterWeather() {
   const [weather, setWeather] = useState(null);
-  const [city, setCity] = useState("Taipei"); // 👉 預設顯示台北
+  const [city, setCity] = useState("Taipei");
 
-  // ⭐ 當使用者改變城市時，自動更新天氣
   useEffect(() => {
     fetch(`https://wttr.in/${city}?format=j1`)
       .then(res => res.json())
@@ -13,7 +12,7 @@ function FooterWeather() {
         setWeather({
           city: data.nearest_area[0].areaName[0].value,
           temp: w.temp_C,
-          desc: w.weatherDesc[0].value,
+          desc: w.weatherDesc[0]?.value,
           humidity: w.humidity,
           wind: w.windspeedKmph
         });
@@ -21,11 +20,20 @@ function FooterWeather() {
       .catch(() => setWeather(null));
   }, [city]);
 
-  return (
-    <div style={styles.weatherBox}>
-      <h3>🌤 今日天氣查詢</h3>
+  // ⭐ 根據天氣狀態判斷 emoji 圖示
+  const getWeatherIcon = (desc) => {
+    if (!desc) return "🌤";
+    if (desc.includes("rain") || desc.includes("雨")) return "🌧";
+    if (desc.includes("cloud") || desc.includes("陰")) return "⛅";
+    if (desc.includes("sunny") || desc.includes("晴")) return "☀️";
+    if (desc.includes("snow") || desc.includes("雪")) return "❄️";
+    return "🌤";
+  };
 
-      {/* ⭐ 改成下拉式選單（Dropdown），不需要輸入框 */}
+  return (
+    <div style={styles.container}>
+      <h3 style={styles.title}>🌤 今日天氣查詢</h3>
+
       <select
         value={city}
         onChange={(e) => setCity(e.target.value)}
@@ -46,44 +54,89 @@ function FooterWeather() {
       </select>
 
       {weather ? (
-        <>
-          <h4>📍 {weather.city}</h4>
-          <p>🌤 狀態：{weather.desc}</p>
-          <p>🌡 溫度：{weather.temp}°C</p>
-          <p>💧 濕度：{weather.humidity}%</p>
-          <p>🌬 風速：{weather.wind} km/h</p>
-        </>
+        <div style={styles.card}>
+          <h2 style={styles.city}>{weather.city}</h2>
+          <div style={styles.iconTemp}>
+            <span style={styles.weatherIcon}>{getWeatherIcon(weather.desc)}</span>
+            <span style={styles.temp}>{weather.temp}°C</span>
+          </div>
+          <p style={styles.desc}>{weather.desc}</p>
+
+          <div style={styles.infoRow}>
+            <span>💧 濕度：{weather.humidity}%</span>
+            <span>🌬 風速：{weather.wind} km/h</span>
+          </div>
+        </div>
       ) : (
-        <p>⚠ 無法取得天氣資料</p>
+        <p style={{ color: "#ff4d4d" }}>⚠ 無法取得天氣資料</p>
       )}
     </div>
   );
 }
 
+// 🎨 美化樣式
 const styles = {
-  weatherBox: {
+  container: {
     marginTop: "50px",
-    background: "#f1f4ff",
     padding: "20px",
-    borderRadius: "12px",
-    maxWidth: "400px",
-    margin: "40px auto",
     textAlign: "center",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-    fontSize: "15px",
-    lineHeight: "1.8",
+  },
+  title: {
+    fontSize: "18px",
+    fontWeight: "600",
+    marginBottom: "12px",
     color: "#1e3a8a",
   },
   selectBox: {
     padding: "8px",
-    borderRadius: "6px",
+    borderRadius: "8px",
     border: "1px solid #bbb",
     marginBottom: "15px",
-    width: "85%",
+    width: "200px",
+    fontSize: "15px",
     outline: "none",
     cursor: "pointer",
-    fontSize: "15px",
-  }
+  },
+  card: {
+    background: "linear-gradient(135deg, #dbeafe, #bfdbfe)",
+    padding: "25px",
+    borderRadius: "16px",
+    maxWidth: "360px",
+    margin: "auto",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+    color: "#1e3a8a",
+  },
+  city: {
+    fontSize: "22px",
+    margin: 0,
+    fontWeight: "700",
+  },
+  iconTemp: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "12px",
+    marginTop: "8px",
+  },
+  weatherIcon: {
+    fontSize: "42px",
+  },
+  temp: {
+    fontSize: "32px",
+    fontWeight: "700",
+  },
+  desc: {
+    margin: "8px 0",
+    fontSize: "16px",
+    fontWeight: "500",
+  },
+  infoRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "10px",
+    fontSize: "14px",
+    padding: "0 20px",
+  },
 };
 
 export default FooterWeather;
