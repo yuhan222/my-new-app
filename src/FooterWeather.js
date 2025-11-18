@@ -4,6 +4,7 @@ function FooterWeather() {
   const [weather, setWeather] = useState(null);
   const [city, setCity] = useState("Taipei"); // ⭐ 預設城市
 
+  // 根據 city 自動抓天氣
   useEffect(() => {
     fetch(`https://wttr.in/${city}?format=j1`)
       .then(res => res.json())
@@ -18,20 +19,31 @@ function FooterWeather() {
         });
       })
       .catch(() => setWeather(null));
-  }, [city]); // ⭐ 當 city 改變時，自動更新天氣
+  }, [city]);
 
   return (
     <div style={styles.weatherBox}>
-      <h3>🌤 查詢天氣</h3>
+      <h3>🌤 今日天氣查詢</h3>
 
-      {/* ⭐ 使用者輸入 / 選擇城市 */}
-      <input
-        type="text"
+      {/* ⭐ 使用者可以選擇地區 */}
+      <select
         value={city}
         onChange={(e) => setCity(e.target.value)}
-        placeholder="輸入城市，例如 Taipei, Tokyo"
-        style={styles.inputBox}
-      />
+        style={styles.selectBox}
+      >
+        <option value="Taipei">台北</option>
+        <option value="Kaohsiung">高雄</option>
+        <option value="Taichung">台中</option>
+        <option value="Tainan">台南</option>
+        <option value="Tokyo">東京</option>
+        <option value="Seoul">首爾</option>
+        <option value="HongKong">香港</option>
+        <option value="Bangkok">曼谷</option>
+        <option value="Singapore">新加坡</option>
+        <option value="NewYork">紐約</option>
+        <option value="London">倫敦</option>
+        <option value="Paris">巴黎</option>
+      </select>
 
       {weather ? (
         <>
@@ -62,13 +74,14 @@ const styles = {
     lineHeight: "1.8",
     color: "#1e3a8a",
   },
-  inputBox: {
+  selectBox: {
     padding: "8px",
     borderRadius: "6px",
     border: "1px solid #bbb",
+    marginBottom: "15px",
     width: "80%",
-    marginBottom: "10px",
     outline: "none",
+    cursor: "pointer",
   }
 };
 
